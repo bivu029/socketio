@@ -3,6 +3,7 @@ const socketIO = require('socket.io');
 
 const app = express();
 
+var users=0;
 async function startServer() {
   try {
     //create a server
@@ -16,21 +17,22 @@ async function startServer() {
     //create socket connection
     io.on('connection', async (socket) => {
       console.log('a user connected');
+      //we user connected add user
+      users++;
+      //if we want to send every one connected to this socket server as broadcast message
+      io.sockets.emit('broadcast',`${users} connected`);
 
-    //create message connection
-      socket.on('private message', async (data) => {
-        try {
-          const { sender, receiver, message } = data;
-          console.log(data);
-          io.emit('private message', { sender, message });
-        } catch (err) {
-          console.error('Error emitting private message:', err);
-          // Handle errors during message emission
-        }
-      });
+     
+      
+
+  
       //show if user disconnected
       socket.on('disconnect', () => {
         console.log('user disconnected');
+        //when user disconnect 
+        users--;
+        //emit this as brodcast to all user
+        io.sockets.emit('broadcast',`${users} disconnected`);
       });
     });
 
@@ -47,5 +49,4 @@ async function startServer() {
 }
 
 startServer();
-
 
