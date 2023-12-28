@@ -11,7 +11,7 @@ function customSocketEndName1( users,io) {
   
         //now if we want to show a welcome or custom msg to  only newly added user ,not existing user
         //we need create custom emit event
-        socket.emit("new user connected", { message: "hi , welcome" });
+        socket.emit("new user connected", { message: "hi , welcome j" });
         //now if want to only show msg to existing users in socket that a new user connected
         socket.broadcast.emit("new user connected", {
           message: users + "user connected",
