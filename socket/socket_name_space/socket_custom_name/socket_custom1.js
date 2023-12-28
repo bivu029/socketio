@@ -7,7 +7,7 @@ function customSocketEndName1( users,io) {
 
     console.log("a user connected");
         //we user connected add user
-        users++;
+        users++; 
   
         //now if we want to show a welcome or custom msg to  only newly added user ,not existing user
         //we need create custom emit event
