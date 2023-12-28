@@ -27,6 +27,9 @@ async function startServer() {
       socket.broadcast.emit("new user connected", {
         message: users + "user connected",
       }),
+      //note if we need show msg to all user including existing, new we need use
+      // io.sockets.emit('broadcast',`${users} connected`)
+
         //show if user disconnected
         socket.on("disconnect", () => {
           console.log("user disconnected");
