@@ -20,7 +20,7 @@ async function startServer() {
       //we user connected add user
       users++;
 
-      //now if we want to show a welcome or custom msg to newly added user ,not existing user
+      //now if we want to show a welcome or custom msg to  only newly added user ,not existing user
       //we need create custom emit event
       socket.emit("new user connected", { message: "hi , welcome" });
       //now if want to only show msg to existing users in socket that a new user connected
