@@ -1,51 +1,55 @@
-const express = require('express');
-const socketIO = require('socket.io');
+const express = require("express");
+const socketIO = require("socket.io");
 
 const app = express();
 
+var users = 0;
 async function startServer() {
   try {
     //create a server
     const server = app.listen(3000, () => {
-        console.log('Server running at http://localhost:3000');
-      });
-      
-      //attached  socket.io with server
+      console.log("Server running at http://localhost:3000");
+    });
+
+    //attached  socket.io with server
     const io = socketIO(server);
 
     //create socket connection
-    io.on('connection', async (socket) => {
-      console.log('a user connected');
+    io.on("connection", async (socket) => {
+      console.log("a user connected");
+      //we user connected add user
+      users++;
 
-    //create message connection
-      socket.on('private message', async (data) => {
-        try {
-          const { sender, receiver, message } = data;
-          console.log(data);
-          io.emit('private message', { sender, message });
-        } catch (err) {
-          console.error('Error emitting private message:', err);
-          // Handle errors during message emission
-        }
-      });
-      //show if user disconnected
-      socket.on('disconnect', () => {
-        console.log('user disconnected');
-      });
+      //now if we want to show a welcome or custom msg to  only newly added user ,not existing user
+      //we need create custom emit event
+      socket.emit("new user connected", { message: "hi , welcome" });
+      //now if want to only show msg to existing users in socket that a new user connected
+      socket.broadcast.emit("new user connected", {
+        message: users + "user connected",
+      }),
+      //note if we need show msg to all user including existing, new we need use
+      // io.sockets.emit('broadcast',`${users} connected`)
+
+        //show if user disconnected
+        socket.on("disconnect", () => {
+          console.log("user disconnected");
+          //when user disconnect
+          users--;
+          //now if want to only show msg to existing users in socket that a new user connected
+          socket.broadcast.emit("new user connected", {
+            message: users + "user disconnected",
+          });
+        });
     });
 
-     // Handle Socket.IO errors
-    io.on('error', (err) => {
-      console.error('Socket.IO error:', err);
-     
+    // Handle Socket.IO errors
+    io.on("error", (err) => {
+      console.error("Socket.IO error:", err);
     });
   } catch (err) {
-     // Handle server startup errors
-    console.error('Server error:', err);
-   
+    // Handle server startup errors
+    console.error("Server error:", err);
   }
 }
 
 startServer();
-
-
