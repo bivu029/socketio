@@ -1,5 +1,6 @@
 const socketHome = require("../socket_name_space/socket_basic");
-const socketCustom1=require("../socket_name_space/socket_custom_name/socket_custom1")
+const socketCustom1=require("../socket_name_space/socket_custom_name/socket_custom1");
+const socketCustomRoom= require('../socket_name_space/socket_custom_name/socket_custom_room2');
 const socketio = require("../socketconfig");
 class SocketService {
 
@@ -14,7 +15,9 @@ class SocketService {
     socketHome(users, io);
     //create custom  name space like new end ponit
     // end point -http://localhost:3000/custom1
-    socketCustom1(users,io)
+    socketCustom1(users,io);
+    //create room or chanel in which one or multiple user can be connected 
+    socketCustomRoom(io,users);// end point -http://localhost:3000/customroom
     
     
   };
